@@ -342,6 +342,8 @@ p {
 }
 .simple_img {
   width: auto;
+  display: inline-block;
+  margin: 20px 0 20px 0;
 }
 .small {
   margin: 5px 0;

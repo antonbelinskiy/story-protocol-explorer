@@ -199,7 +199,7 @@ sudo systemctl enable story-geth`
                     comment={"Enable and reload the services"}
                 />
 
-                <h2>Setting up grafana dashboard</h2>
+                <h2 id={"grafana"}>Setting up grafana dashboard</h2>
 
                 <h4>
                     Install Prometheus
@@ -343,9 +343,9 @@ sudo systemctl status grafana-server`}
                     comment={"Set up prometheus to true"}
                 />
 
-                <h4>
+                <h2>
                     Connect to Grafana
-                </h4>
+                </h2>
 
                 <p className={"small"}>Open browser and go to http://YOUR_IP:3000</p>
 
@@ -365,6 +365,17 @@ sudo systemctl status grafana-server`}
 
                 <h4>Go to Dashboards - New - Import</h4>
                 <img src={Img6} className={"simple_img"} alt="img"/>
+
+                <h4>
+                    Copy and paste content from our JSON <a href="http://65.109.159.109/story/grafana/model.json">File</a>
+                </h4>
+
+                <CodeBlock
+                    codeText={"http://65.109.159.109/story/grafana/model.json"}
+                    comment={"Link for the json grafana model"}
+                />
+
+                <h3>Congrats, your validator dashboard is ready!</h3>
 
 
                 <h2>
