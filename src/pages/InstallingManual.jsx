@@ -191,6 +191,56 @@ sudo systemctl enable story-geth`
                     comment={"Enable and reload the services"}
                 />
 
+                <h2>Setting up grafana dashboard</h2>
+
+                <h4>
+                    Install Prometheus
+                </h4>
+
+                <CodeBlock
+                    codeText={`cd $HOME
+curl -s https://api.github.com/repos/prometheus/prometheus/releases/latest | \\
+grep browser_download_url | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -
+tar xfz prometheus-2.*.*tar.gz
+rm $HOME/prometheus-2.*.*tar.gz
+mv prometheus-2.* prometheus
+sudo cp ~/prometheus/prometheus /usr/local/bin/`}
+                />
+
+                <h4>
+                    Create service file for Prometheus
+                </h4>
+                <CodeBlock
+                    codeText={`sudo tee /etc/systemd/system/prometheusd.service << EOF
+[Unit]
+Description=Prometheus 
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which prometheus) --config.file="$HOME/prometheus/prometheus.yml"
+RestartSec=10
+Restart=on-failure
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+EOF`}
+                />
+
+
+                <h4>Reload and start Prometheus</h4>
+
+                <CodeBlock
+                    codeText={`systemctl daemon-reload
+sudo systemctl enable prometheusd.service
+sudo systemctl restart prometheusd.service
+sudo systemctl status prometheusd.service
+sudo journalctl -u prometheusd.service -fn 50 -o cat`}
+                />
+
+
+
                 <h2>
                     Useful commands
                 </h2>
