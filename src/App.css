@@ -340,3 +340,11 @@ p {
   transition: width 0.5s ease-in-out;
   border-radius: 12px 0 0 12px;
 }
+.simple_img {
+  width: auto;
+}
+.small {
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: 400;
+}

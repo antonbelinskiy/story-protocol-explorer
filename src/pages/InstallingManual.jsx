@@ -2,6 +2,14 @@ import {Logo} from "../particles/Logo";
 import CodeBlock from "../particles/CodeBlock";
 import scriptImg from "../images/script-1.png"
 
+import Img1 from "../images/grafana-1.png"
+import Img2 from "../images/grafana-2.png"
+import Img3 from "../images/grafana-3.png"
+import Img4 from "../images/grafana-4.png"
+import Img5 from "../images/grafana-5.png"
+import Img6 from "../images/grafana-6.png"
+
+
 export const InstallingManual = () => {
 
     const installingCode = {
@@ -239,6 +247,124 @@ sudo systemctl status prometheusd.service
 sudo journalctl -u prometheusd.service -fn 50 -o cat`}
                 />
 
+                <h4>
+                    Install node exporter
+                </h4>
+
+                <CodeBlock
+                    codeText={`cd $HOME
+wget https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
+tar xzf node_exporter-1.6.1.linux-amd64.tar.gz
+chmod +x node_exporter-1.6.1.linux-amd64/node_exporter
+sudo mv ~/node_exporter-1.6.1.linux-amd64/node_exporter /usr/local/bin/
+rm -rf node_exporter-1.6.1.linux-amd64 node_exporter-1.6.1.linux-amd64.tar.gz`}
+                />
+
+                <h4>Create service file for node exporter</h4>
+
+                <CodeBlock
+                    codeText={`sudo tee /etc/systemd/system/node-exporterd.service << EOF
+[Unit]
+Description=Node-Exporter 
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which node_exporter)
+RestartSec=10
+Restart=on-failure
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+EOF`}
+                />
+
+                <h4>Reload and start node service</h4>
+                <CodeBlock
+                    codeText={`systemctl daemon-reload
+sudo systemctl enable node-exporterd.service
+sudo systemctl restart node-exporterd.service
+sudo systemctl status node-exporterd.service
+sudo journalctl -u node-exporterd.service -fn 50 -o cat`}
+                />
+
+                <h4>Setup Prometheus config</h4>
+
+                <CodeBlock
+                    codeText={`nano $HOME/prometheus/prometheus.yml`}
+                />
+
+                <CodeBlock
+                    codeText={`
+  - job_name: 'story-node'
+    static_configs:
+      - targets: ['localhost:26660']`}
+                    comment={"Add text below and save"}
+                />
+
+                <h4>
+                    Restart prometheus services
+                </h4>
+                <CodeBlock
+                    codeText={`sudo systemctl restart  prometheusd.service
+sudo systemctl status prometheusd.service`}
+                />
+
+
+                <h4>Install Grafana</h4>
+                <CodeBlock
+                    codeText={`sudo apt-get install -y apt-transport-https
+sudo apt-get install -y software-properties-common wget
+sudo wget -q -O /usr/share/keyrings/grafana.key https://apt.grafana.com/gpg.key
+echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com beta main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+sudo apt-get update
+sudo apt-get install grafana-enterprise`}
+                />
+
+                <h4>
+                    Reload and start node service
+                </h4>
+
+                <CodeBlock
+                    codeText={`sudo systemctl daemon-reload
+sudo systemctl enable grafana-servers
+sudo systemctl start grafana-server
+sudo systemctl status grafana-server`}
+                />
+
+                <h4>Setting up dashboard</h4>
+                <CodeBlock
+                    codeText={`nano $HOME/.story/story/config/config.toml`}
+                />
+
+                <CodeBlock
+                    codeText={"prometheus = true"}
+                    comment={"Set up prometheus to true"}
+                />
+
+                <h4>
+                    Connect to Grafana
+                </h4>
+
+                <p className={"small"}>Open browser and go to http://YOUR_IP:3000</p>
+
+                <p className={"small"}>Login: admin, Password: admin</p>
+                <img src={Img1} className={"simple_img"} alt="img"/>
+
+
+                <h4>On Home page click Connections - Data Sources - Add data source and click on Prometheus
+                </h4>
+
+                <img src={Img3} className={"simple_img"} alt="img"/>
+
+                <h4>In connection type: http://localhost:9090, setup name and click Save & test in the end of the
+                    page </h4>
+                <img src={Img4} className={"simple_img"} alt="img"/>
+                <img src={Img5} className={"simple_img"} alt="img"/>
+
+                <h4>Go to Dashboards - New - Import</h4>
+                <img src={Img6} className={"simple_img"} alt="img"/>
 
 
                 <h2>

@@ -94,7 +94,7 @@ export const HomePage = () => {
   const [syncPercents, setSyncPersents] = useState(0);
 
   const fetchData = (id) => {
-    return fetch(`http://localhost:3001/proxy/${id}`)
+    return fetch(`https://api.testnet.storyscan.app/validators/${id}`)
         .then(res => res.json())
         .then(r => {
           console.log(r);
