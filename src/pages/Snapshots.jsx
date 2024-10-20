@@ -15,14 +15,14 @@ sudo systemctl stop story-geth`,
 rm -rf ~/.story/geth/iliad/geth/chaindata`,
 
         "5": `sudo mkdir -p /root/.story/story/data
-lz4 -d -c Story_snapshot.lz4 | pv | sudo tar xv -C ~/.story/story/ > /dev/null`,
+lz4 -d -c Story_snapshot.lz4 | pv | sudo tar xv -C ~/.story/story/data/ > /dev/null`,
 
         "6": `cp ~/.story/priv_validator_state.json.backup ~/.story/story/data/priv_validator_state.json`,
 
         "7": `sudo systemctl start story
 sudo systemctl start story-geth`,
         "15": `sudo mkdir -p /root/.story/geth/iliad/geth/chaindata
-lz4 -d -c Geth_snapshot.lz4 | pv | sudo tar xv -C ~/.story/geth/iliad/geth/ > /dev/null`
+lz4 -d -c Geth_snapshot.lz4 | pv | sudo tar xv -C ~/.story/geth/iliad/geth/chaindata/ > /dev/null`
     };
 
     const snapshotTabs = [
