@@ -241,6 +241,7 @@ EOF`}
 
                 <CodeBlock
                     codeText={`systemctl daemon-reload
+sudo systemctl stop prometheus                    
 sudo systemctl enable prometheusd.service
 sudo systemctl restart prometheusd.service
 sudo systemctl status prometheusd.service
